@@ -1,0 +1,16 @@
+{
+    "slack": {
+        "webhookurl": "https://hooks.slack.com/services/XXXXXXXXX/YYYYYYYYY/ZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "channel": "@statox",
+        "username": "StackExchange Watcher"
+    },
+    "persistence": {
+        "idfilepath": "./id.txt"
+    },
+    "stackexchange": {
+        "sites": [
+            "vi.stackexchange.com", "emacs.stackexchange.com", "superuser.com", "unix.stackexchange.com"
+        ],
+        "refresh": 30
+    }
+}

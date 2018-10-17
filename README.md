@@ -42,3 +42,11 @@ You're ready to go, simply start the app with:
  - [axios](https://www.npmjs.com/package/axios) for the web request
  - [cheerio](https://www.npmjs.com/package/cheerio) for the HTML parsing
  - [node-slack](https://www.npmjs.com/package/node-slack) for the notification to slack
+
+# Roadmap
+
+ - [ ] Watch the review queues
+ - [ ] Support several slack users to have one instance for several users in the
+   same slack team
+ - [ ] Get rid of the id file to prepare the deployment as cloud function
+ - [ ] Make deployable in cloud function out of the box

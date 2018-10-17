@@ -11,6 +11,7 @@
         "sites": [
             "vi.stackexchange.com", "emacs.stackexchange.com", "superuser.com", "unix.stackexchange.com"
         ],
-        "refresh": 30
+        "refresh": 30,
+        "questions": "https://api.stackexchange.com/2.2/questions"
     }
 }

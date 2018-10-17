@@ -12,13 +12,15 @@ const SLACK_HOOK_URL  = config.slack.webhookurl;
 const SLACK_CHANNEL   = config.slack.channel;
 const SLACK_USERNAME  = config.slack.username;
 
-const SITES = config.stackexchange.sites;
-const REFRESH_RATE = config.stackexchange.refresh;
+const SE_SITES          = config.stackexchange.sites;
+const SE_REFRESH_RATE   = config.stackexchange.refresh;
+const SE_URL_QUESTIONS  = config.stackexchange.questions;
 
 // Instanciate a slack instance of node-slack
 // with the correct webhook url
 const slack = new Slack(SLACK_HOOK_URL, {});
 
+var timestamp = Math.round(Date.now() / 1000);
 
 /*
  * Send a notification to slack
@@ -84,11 +86,61 @@ function checkLastQuestion(site) {
     });
 }
 
-function checkSites() {
-    console.log('checking sites');
-    SITES.forEach(site => checkLastQuestion(site))
+/*
+ * Check if the questions sorted by newest have a new entry
+ * and send a slack notification if they do
+ */
+function checkLastQuestionV2(site) {
+    console.log("Time stamp before request", timestamp);
+    // Get the page of the lastest questions
+    var params = {
+        fromdate: timestamp,
+        //fromdate: 1539648000,
+        order: 'desc',
+        sort: 'creation',
+        site: 'vi'
+    }
 
-    setTimeout(checkSites, REFRESH_RATE * 1000);
+    console.log(params);
+    axios.get(SE_URL_QUESTIONS, { params: params })
+        .then(rep => {
+            timestamp = Math.round(Date.now() / 1000);
+
+            // Check for new questions
+            if (rep.data.items && rep.data.items.length > 0) {
+                var message = rep.data.items.length + " new question(s) on stackexchange " + site;
+                rep.data.items.forEach(question => {
+                    message += "\n" + question.title;
+                    message += "\n" + question.link;
+                    message += "\n";
+
+                    sendNotification(message);
+                });
+            }
+        })
+        .catch(err => {
+            //console.log(err);
+        });
 }
 
-checkSites();
+function checkSites() {
+    console.log('checking sites');
+    SE_SITES.forEach(site => checkLastQuestion(site))
+
+    setTimeout(checkSites, SE_REFRESH_RATE * 1000);
+}
+
+//checkSites();
+
+function checkSitesV2() {
+    checkLastQuestionV2("vi")
+
+    count ++;
+
+    if (count < 3) {
+        setTimeout(checkSitesV2, 5000);
+    }
+}
+
+var count = 0;
+checkSitesV2()

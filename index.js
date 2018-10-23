@@ -84,11 +84,15 @@ function checkLastQuestion(site) {
     });
 }
 
-function checkSites() {
-    console.log('checking sites');
-    SITES.forEach(site => checkLastQuestion(site))
+SITES.forEach(site => checkLastQuestion(site))
 
-    setTimeout(checkSites, REFRESH_RATE * 1000);
-}
-
-checkSites();
+/*
+ *function checkSites() {
+ *    console.log('checking sites');
+ *    SITES.forEach(site => checkLastQuestion(site))
+ *
+ *    setTimeout(checkSites, REFRESH_RATE * 1000);
+ *}
+ *
+ *checkSites();
+ */
